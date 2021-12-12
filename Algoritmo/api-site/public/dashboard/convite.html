@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="../assets/Imgs/Icon.png" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomoUniversalis | Indicar</title>
+
+    <link rel="stylesheet" href="indicar.css">
+    <link rel="stylesheet" href="header.css">
+
+    <script src="../js/funcoes.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" href="../assets/Imgs/Icon.png">
+</head>
+<body onload="validarSessao()">
+    <div class="header-left dash-header">
+
+        <h1>HomoUniversalis</h1>
+
+        <div class="hello">
+            <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
+        </div>
+
+        <div class="btn-nav-white">
+            <a href="./cards.html">
+                <h3>Artigos</h3>
+            </a>
+        </div>
+
+        <div class="btn-nav-white">
+            <a href="./dashboard.html">
+                <h3>Ranking</h3>
+            </a>
+        </div>
+
+        <div class="btn-nav-white">
+            <a href="./mural.html">
+                <h3>Quiz</h3>
+            </a>
+        </div>
+
+        <div class="btn-nav">
+            <a href="./convite.html">
+                <h3>Indicar</h3>
+            </a>
+        </div>
+
+        <div class="btn-logout" onclick="limparSessao()">
+            <h3>Sair</h3>
+        </div>
+
+    </div>
+
+    <div class="right">
+        <div class="container">
+            <h1>Convide algum amigo!</h1>
+
+            <div id="convite">
+                Email: <input id="input_email">
+            </div>
+
+            <button id="btn-convidar" class="btn-nav-white" onclick="cadastrarConvite()">
+                <h3>
+                    Convidar
+                </h3>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    function cadastrarConvite() {
+        // aguardar();
+
+        var emailVar = input_email.value;
+        var fkanfitriaoVar = sessionStorage.ID_USUARIO;
+
+        // TODO: VERIFICAR AS VALIDAÇÕES QUE ELES ESTÃO APRENDENDO EM ALGORITMOS 
+        if ( emailVar == "" ) {
+
+            window.alert("Preencha todos os campos para prosseguir!");
+            
+            if (emailVar == "") {
+                console.log('email está em branco')
+            }
+            
+            return false;
+        }
+
+        if (emailVar.indexOf("@") == -1 || emailVar.indexOf(".com") == -1) {
+            window.alert("Ops, e-mail inválido! Verifique e tente novamente.");
+            finalizarAguardar();
+            return false;
+        }
+
+        fetch("/usuarios/cadastrarConvite", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: emailVar,
+                fkanfitriao: fkanfitriaoVar
+            })
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                window.alert("Convite realizado com sucesso!");
+                // window.location = "login.html";
+                // limparFormulario();
+                // finalizarAguardar();
+            } else {
+                throw ("Houve um erro ao tentar realizar o convite!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            // finalizarAguardar();
+        });
+
+        return false;
+    }
+
+</script>
